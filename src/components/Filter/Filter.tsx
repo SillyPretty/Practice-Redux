@@ -2,17 +2,22 @@ import { useAppDispatch, useAppSelector } from '../hooks/useRedux'
 import { RemoveFilterItem, DeleteAll } from '../../store/filters/filters.slice'
 
 import styles from './Filter.module.scss'
+import { AddFilterCard } from '../../store/positions/positions.slice'
 
 const Filter = () => {
   const filters = useAppSelector((state) => state.filter.value)
 
   const dispatch = useAppDispatch()
 
+  const card = useAppSelector((state) => state.position.card)
+
   const BtnAddFnc = (name: string) => {
     dispatch(RemoveFilterItem(name))
+    dispatch(AddFilterCard(card))
   }
   const ClearAllBtn = () => {
     dispatch(DeleteAll())
+    dispatch(AddFilterCard(card))
   }
 
   return (

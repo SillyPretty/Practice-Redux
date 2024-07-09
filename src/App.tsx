@@ -1,8 +1,8 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect } from 'react'
 import axios from 'axios'
 
 import { useAppDispatch, useAppSelector } from './components/hooks/useRedux'
-import { AddItem } from './store/positions/positions.slice'
+import { AddCard, AddFilterCard } from './store/positions/positions.slice'
 
 import Header from './components/Header/Header'
 import { IItem } from './model/interface'
@@ -16,7 +16,6 @@ const App: FC = () => {
     FetchFnc()
   }, [])
 
-  const [newCard, setNewCard] = useState<IItem[]>([])
   const dispatch = useAppDispatch()
 
   const FetchFnc = async () => {
@@ -27,12 +26,11 @@ const App: FC = () => {
         filter: [...item.languages, item.level, item.role, ...item.tools],
       }
     })
-    dispatch(AddItem(value))
-    setNewCard(value)
+    dispatch(AddCard(value))
+    dispatch(AddFilterCard(value))
   }
 
-  const cards = useAppSelector((state) => state.position.card)
-
+  const cards = useAppSelector((state) => state.position.filterCard)
   const filters = useAppSelector((state) => state.filter.value)
 
   useEffect(() => {
@@ -47,7 +45,7 @@ const App: FC = () => {
       }
       counter = 0
     })
-    setNewCard(item)
+    dispatch(AddFilterCard(item))
   }, [filters])
 
   return (
@@ -58,7 +56,7 @@ const App: FC = () => {
           <Filter />
         </div>
         <div className='container'>
-          {newCard.map((card: IItem, index: number) => (
+          {cards.map((card: IItem, index: number) => (
             <Card card={card} key={index} />
           ))}
         </div>

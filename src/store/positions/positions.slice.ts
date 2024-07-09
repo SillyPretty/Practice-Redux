@@ -8,14 +8,18 @@ const positionSlice = createSlice({
   name: 'position',
   initialState: {
     card: initialState,
+    filterCard: initialState,
   },
   reducers: {
-    AddItem(state, action: PayloadAction<IItem[]>) {
+    AddCard(state, action: PayloadAction<IItem[]>) {
       state.card = action.payload
+    },
+    AddFilterCard(state, action: PayloadAction<IItem[]>) {
+      state.filterCard = action.payload
     },
   },
 })
 
-export const { AddItem } = positionSlice.actions
+export const { AddCard, AddFilterCard } = positionSlice.actions
 
 export const PositionReducer = positionSlice.reducer
