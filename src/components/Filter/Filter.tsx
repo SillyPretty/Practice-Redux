@@ -1,15 +1,16 @@
+import { FC } from 'react'
+
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux'
 import { RemoveFilterItem, DeleteAll } from '../../store/filters/filters.slice'
-
-import styles from './Filter.module.scss'
 import { AddFilterCard } from '../../store/positions/positions.slice'
 
-const Filter = () => {
-  const filters = useAppSelector((state) => state.filter.value)
+import styles from './Filter.module.scss'
 
+const Filter:FC = () => {
+  
   const dispatch = useAppDispatch()
-
   const card = useAppSelector((state) => state.position.card)
+  const filters = useAppSelector((state) => state.filter.value)
 
   const BtnAddFnc = (name: string) => {
     dispatch(RemoveFilterItem(name))

@@ -18,3 +18,5 @@ export interface IItem {
 export interface ICard {
   card: IItem
 }
+
+export type TypeFilterCardFnc = (cards: IItem[], filters: string[]) => IItem[]

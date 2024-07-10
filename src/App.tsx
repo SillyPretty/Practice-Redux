@@ -4,21 +4,22 @@ import axios from 'axios'
 import { useAppDispatch, useAppSelector } from './components/hooks/useRedux'
 import { AddCard, AddFilterCard } from './store/positions/positions.slice'
 
+import Card from './components/Card/Card'
+import Filter from './components/Filter/Filter'
 import Header from './components/Header/Header'
+
+import { FilterCardFnc } from './model'
 import { IItem } from './model/interface'
 
 import './App.scss'
-import Card from './components/Card/Card'
-import Filter from './components/Filter/Filter'
 
 const App: FC = () => {
-  useEffect(() => {
-    FetchFnc()
-  }, [])
 
   const dispatch = useAppDispatch()
+  const cards = useAppSelector((state) => state.position.filterCard)
+  const filters = useAppSelector((state) => state.filter.value)
 
-  const FetchFnc = async () => {
+  const ResponseDataFnc = async () => {
     const { data } = await axios.get('http://localhost:3000/0')
     const value = data.data.map((item: IItem) => {
       return {
@@ -30,22 +31,12 @@ const App: FC = () => {
     dispatch(AddFilterCard(value))
   }
 
-  const cards = useAppSelector((state) => state.position.filterCard)
-  const filters = useAppSelector((state) => state.filter.value)
+  useEffect(() => {
+    ResponseDataFnc()
+  }, [])
 
   useEffect(() => {
-    let counter = 0
-    const item = cards.filter((card) => {
-      card.filter.map((filterCard) => {
-        if (filters.includes(filterCard)) return counter++
-      })
-      if (counter === filters.length) {
-        counter = 0
-        return card
-      }
-      counter = 0
-    })
-    dispatch(AddFilterCard(item))
+    dispatch(AddFilterCard(FilterCardFnc(cards, filters)))
   }, [filters])
 
   return (
